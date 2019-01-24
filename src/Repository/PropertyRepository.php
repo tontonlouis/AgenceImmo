@@ -25,7 +25,6 @@ class PropertyRepository extends ServiceEntityRepository
     /**
      * @return Query
      */
-
     public function findAllVisibleQuery(PropertySearch $search): Query
     {
         $query = $this-> findVisibleQuery();

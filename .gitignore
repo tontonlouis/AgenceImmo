@@ -1,4 +1,6 @@
-
+###> Property/image
+public/images
+public/media
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -21,3 +23,7 @@
 /.phpcs-cache
 /phpcs.xml
 ###< squizlabs/php_codesniffer ###
+
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###

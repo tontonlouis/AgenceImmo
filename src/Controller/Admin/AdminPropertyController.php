@@ -12,6 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Option;
+// use Symfony\Component\HttpFoundation\File\UploadedFile;
+// use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+// use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 
 class AdminPropertyController extends AbstractController
@@ -70,12 +73,15 @@ class AdminPropertyController extends AbstractController
     * @return \Symfony\Component\HttpFoundation\Response
     */
 
-    public function edit(Property $property, Request $request)
+    public function edit(Property $property, Request $request) //, CacheManager $cacheManager, UploaderHelper $helper)
     {
         $form = $this->createForm(PropertyType::class, $property);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // if($property->getImageFile() instanceof UploadedFile){
+            //     $cacheManager->remove($helper->asset($property, 'imageFile'));
+            // }
             $this->em->flush();
             $this->addFlash('success', 'Bien modifié avec succès');
             return $this->redirectToRoute('admin.property.index');
