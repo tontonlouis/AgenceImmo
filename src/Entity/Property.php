@@ -5,19 +5,16 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Cocur\Slugify\Slugify;
+
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Cocur\Slugify\Slugify;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PropertyRepository")
  * @UniqueEntity("title")
- * @Vich\Uploadable
- */
+  */
 class Property
 {
 
@@ -33,20 +30,7 @@ class Property
      */
     private $id;
 
-    /**
-     * @var string|null
-     * @ORM\Column(type="string", length=255) 
-     */
-    private $filename;
-
-    /**
-     *@Vich\UploadableField(mapping="property_image", fileNameProperty="filename")
-     * @var File|null
-     * @Assert\Image(
-     *    mimeTypes="image/jpeg"
-     * )
-     */
-    private $imageFile;
+  
     /**
      * @Assert\Length(min = 5, max = 50)
      * @ORM\Column(type="string", length=255)
@@ -108,6 +92,7 @@ class Property
     public function __construct(){
         $this->created_at = new \DateTime();
         $this->options = new ArrayCollection();
+        $this->pictures = new ArrayCollection();
     }
 
     /**
@@ -127,9 +112,21 @@ class Property
     private $options;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable = true)
      */
-    private $updated_at;
+    private $updated;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Picture", mappedBy="property", orphanRemoval=true, cascade={"persist"})
+     */
+    private $pictures;
+
+    /**
+     * @Assert\All({
+     *      @Assert\Image(mimeTypes="image/jpeg")
+     * })
+     */
+    private $pictureFiles;
 
     public function getId(): ?int
     {
@@ -336,64 +333,70 @@ class Property
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
-
-    public function getFilename(): ?string
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->filename;
+        return $this->updated;
     }
 
-    /**
-     * @param null|string $filename
-     * @return Property
-     */
-
-    public function setFilename(?string $filename): Property
+    public function setUpdatedAt(\DateTimeInterface $updated): self
     {
-        $this->filename = $filename;
+        $this->updated = $updated;
+
         return $this;
     }
 
-
     /**
-     * @return nuul|File
+     * @return Collection|Picture[]
      */
-
-    public function getImageFile(): ?File
+    public function getPictures(): Collection
     {
-        return $this->imageFile;
+        return $this->pictures;
     }
 
-    /**
-     * @param null|File $imageFile
-     * @return Property
-     */
-
-    public function setImageFile(?File $imageFile): Property
+    public function addPicture(Picture $picture): self
     {
-        $this->imageFile = $imageFile;
-
-        if( $this->imageFile instanceof UploadedFile){
-            $this->updated_at = new \DateTime('now');
+        if (!$this->pictures->contains($picture)) {
+            $this->pictures[] = $picture;
+            $picture->setProperty($this);
         }
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function removePicture(Picture $picture): self
     {
-        return $this->updated_at;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updated_at): self
-    {
-        $this->updated_at = $updated_at;
+        if ($this->pictures->contains($picture)) {
+            $this->pictures->removeElement($picture);
+            // set the owning side to null (unless already changed)
+            if ($picture->getProperty() === $this) {
+                $picture->setProperty(null);
+            }
+        }
 
         return $this;
     }
     
-    
+    /**
+     * @return mixed
+     */
+    public function getPictureFiles()
+    {
+        return $this->pictureFiles;
+    }
+
+    /**
+     * @param mixed $pictureFiles
+     * @return Property
+     */
+    public function setPictureFiles($pictureFiles): self
+    {
+        foreach ($pictureFiles as $pictureFile) {
+            $picture = new Picture();
+            $picture->setImageFile($pictureFile);
+            $this->addPicture($picture);
+        }
+        $this->pictureFiles = $pictureFiles;
+        return $this;
+    }
 
 }
