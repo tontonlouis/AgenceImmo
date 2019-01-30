@@ -12,9 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Option;
-// use Symfony\Component\HttpFoundation\File\UploadedFile;
-// use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-// use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 
 class AdminPropertyController extends AbstractController

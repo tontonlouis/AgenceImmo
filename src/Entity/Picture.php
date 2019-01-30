@@ -22,6 +22,7 @@ class Picture
     private $id;
 
     /**
+     * @var string|null
      * @ORM\Column(type="string", length=255)
      */
     private $filename;
@@ -71,7 +72,7 @@ class Picture
     }
 
     /**
-     * @return nuul|File
+     * @return null|File
      */
 
     public function getImageFile() : ?File
@@ -84,7 +85,7 @@ class Picture
      * @return Property
      */
 
-    public function setImageFile(? File $imageFile) : self
+    public function setImageFile(?File $imageFile): self
     {
         $this->imageFile = $imageFile;
         return $this;

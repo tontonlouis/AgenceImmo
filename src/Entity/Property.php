@@ -5,7 +5,6 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -123,7 +122,10 @@ class Property
 
     /**
      * @Assert\All({
-     *      @Assert\Image(mimeTypes="image/jpeg")
+     *      @Assert\Image(
+     *          mimeTypes={"image/png", "image/jpeg", "image/jpg", "image/gif"},
+     *          mimeTypesMessage= "formats autorisés: png, jpeg, jpg, gif"
+     *      )
      * })
      */
     private $pictureFiles;
@@ -353,6 +355,15 @@ class Property
         return $this->pictures;
     }
 
+    public function getPicture(): ?Picture
+    {
+        if($this->pictures->isEmpty())
+        {
+            return null;
+       
+        }
+        return $this->pictures->first();
+    }
     public function addPicture(Picture $picture): self
     {
         if (!$this->pictures->contains($picture)) {
