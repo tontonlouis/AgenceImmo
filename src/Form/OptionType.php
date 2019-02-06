@@ -21,6 +21,7 @@ class OptionType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Option::class,
+            'translation_domain' => 'forms'
         ]);
     }
 }
