@@ -44,6 +44,12 @@ class PropertySearch
     private $lng;
 
     /**
+     * @var string|null
+     */
+    private $address;
+
+
+    /**
      * @return int|null
      */
     public function getMaxPrice() : ? int
@@ -167,6 +173,30 @@ class PropertySearch
     public function setLat($lat)
     {
         $this->lat = $lat;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of address
+     *
+     * @return  string|null
+     */ 
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * Set the value of address
+     *
+     * @param  string|null  $address
+     *
+     * @return  self
+     */ 
+    public function setAddress($address)
+    {
+        $this->address = $address;
 
         return $this;
     }

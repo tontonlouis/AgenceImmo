@@ -42,7 +42,15 @@ class PropertySearchType extends AbstractType
             ])
             ->add('lat', HiddenType::class)
             ->add('lng', HiddenType::class)
+
+            ->add('address',null, [
+                'label' => false,
+                'required' => false,
+                
+            ])
             ->add('distance', ChoiceType::class,[
+                'label' => false,
+                'required' => false,
                 'choices' => [
                     '10 km' => 10,
                     '100 km' => 100,

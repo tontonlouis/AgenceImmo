@@ -9,8 +9,14 @@
 import Places from 'places.js';
 import Map from './modules/map';
 
+/**
+ * Initailise le module Map (map.js)
+ */
 Map.init();
 
+/**
+ * @function adresse_add
+ */
 let inputAddress = document.querySelector('#property_address')
 
 if (inputAddress !== null) {
@@ -26,6 +32,9 @@ if (inputAddress !== null) {
     })
 }
 
+/**
+ * @function search_address
+ */
 let searchAddress = document.querySelector('#search_address')
 
 if (searchAddress !== null) {
@@ -38,18 +47,22 @@ if (searchAddress !== null) {
         document.querySelector('#lng').value = e.suggestion.latlng.lng
     })
 }
+
+// Required fichier CSS et le module select2
 require('../css/app.css');
-
 require('select2')
-
-
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 const $ = require('jquery');
 
-
+/**
+ * Met en forme tout les selecteurs avec le module Select2
+ */
 $('select').select2()
 
+/**
+ * Permet de mettre de l'animation sur le bouton contact
+ */
 let $contactButton = $('#contactButton')
 
 $contactButton.click(e => {
@@ -90,6 +103,9 @@ document.querySelectorAll('[data-delete]').forEach(a => {
     })
 });
 
+/**
+ *  Permet de mettre de l'animation sur le carousel d'image
+ */
 $('.carousel').carousel()
 
 console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
