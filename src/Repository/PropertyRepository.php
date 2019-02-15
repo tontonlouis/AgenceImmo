@@ -25,9 +25,20 @@ class PropertyRepository extends ServiceEntityRepository
     /**
      * @return Query
      */
-    public function findAllVisibleQuery(PropertySearch $search): Query
+    public function findAllVisibleQuery(PropertySearch $search) : Query
     {
-        $query = $this-> findVisibleQuery();
+        $query = $this->findVisibleQuery();
+
+        if ($search->getLat() && $search->getLng()) {
+            $query = $query
+                ->select('p')
+                ->andWhere('(6343 * 2 * ASIN(SQRT(POWER(SIN((p . lat - :lat) * pi() / 180 / 2), 2) + COS(p . lat * pi() / 180) * COS(:lat * pi () / 180) * POWER(SIN((p . lng - :lng) * pi() / 180 / 2), 2)))) <= :distance')
+
+                ->setParameter('lng', $search->getLng())
+                ->setParameter('lat', $search->getLat())
+                ->setParameter('distance', $search->getDistance());
+
+        }
 
         if ($search->getMaxPrice()) {
             $query = $query
@@ -41,10 +52,12 @@ class PropertyRepository extends ServiceEntityRepository
                 ->setParameter('minSurface', $search->getMinSurface());
         }
 
-        if($search->getOptions()->count() > 0){
+
+
+        if ($search->getOptions()->count() > 0) {
             foreach ($search->getOptions() as $k => $option) {
                 dump($k);
-               $query = $query
+                $query = $query
                     ->andWhere(":option$k MEMBER OF p.options")
                     ->setParameter("option$k", $option);
             }
@@ -57,18 +70,18 @@ class PropertyRepository extends ServiceEntityRepository
     /**
      * @return Property[]
      */
-    public function findLatest(): array
+    public function findLatest() : array
     {
-        return $this-> findVisibleQuery()
-        ->setMaxResults(4)
-        ->getQuery()
-        ->getResult();
+        return $this->findVisibleQuery()
+            ->setMaxResults(4)
+            ->getQuery()
+            ->getResult();
     }
 
-    private function findVisibleQuery(): QueryBuilder
+    private function findVisibleQuery() : QueryBuilder
     {
         return $this->createQueryBuilder('p')
             ->where('p.sold = false');
     }
-    
+
 }

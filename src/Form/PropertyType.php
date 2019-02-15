@@ -45,6 +45,7 @@ class PropertyType extends AbstractType
             ->add('lat', HiddenType::class)
             ->add('lng', HiddenType::class)
             ->add('sold')
+            
         ;
     }
 

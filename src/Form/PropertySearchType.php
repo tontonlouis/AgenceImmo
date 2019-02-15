@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\Option;
 
@@ -39,9 +40,16 @@ class PropertySearchType extends AbstractType
                 'choice_label' => 'name',
                 'multiple' => true
             ])
-            // ->add('submit', SubmitType::class,[
-            //     'label' => 'Rechercher'
-            // ])
+            ->add('lat', HiddenType::class)
+            ->add('lng', HiddenType::class)
+            ->add('distance', ChoiceType::class,[
+                'choices' => [
+                    '10 km' => 10,
+                    '100 km' => 100,
+                    '500 km' => 500
+                ]
+            ])
+            
         ;
     }
 
