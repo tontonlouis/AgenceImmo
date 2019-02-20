@@ -39,33 +39,7 @@ class PropertyController extends AbstractController
 
     public function index(PaginatorInterface $paginator, Request $request): Response
     {
-        //  CREER UN ENREGISTREMENT DANS LA BASE DE DONNEE
-        // $property = new Property();
-        // $property->setTitle('Mon premier bien')
-        //     ->setPrice(200000)
-        //     ->setRooms(4)
-        //     ->setBedrooms(3)
-        //     ->setDescription("Une petite description du bien")
-        //     ->setSurface(60)
-        //     ->setFloor(4)
-        //     ->setHeat(1)
-        //     ->setCity('Dunkerque')
-        //     ->setAddress('25 rue Jean bart')
-        //     ->setPostalCode('59140');
-        // RECUPERE L'ENTITY MANAGER
-        // $em = $this->getDoctrine()->getManager();
-        // ENVOI LES DONNEES DANS LA BDD
-        // $em->persist($property);
-        // $em->flush();
-        // $repository = $this->getDoctrine()->getRepository(Property::class);
-        // dump($repository);
-
-        // $properties = $this->repository->findAllVisible();
-
-        // Créer un entity qui va représenter notre recherche
-        // Créer un formulaire 
-        // Gérer le traitement dans le controller
-        
+              
         $search = new PropertySearch();
 
         $form = $this->createForm(PropertySearchType::class, $search);
