@@ -9,7 +9,7 @@
 >
     <php>
         <ini name="error_reporting" value="-1" />
-        <env name="APP_ENV" value="test" />
+        <env name="APP_ENV" value="tests" />
         <env name="SHELL_VERBOSITY" value="-1" />
     </php>
 
@@ -26,6 +26,6 @@
     </filter>
 
     <listeners>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
-    </listeners>
+    <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
+</listeners>
 </phpunit>
